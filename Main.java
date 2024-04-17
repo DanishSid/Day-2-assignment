@@ -1,44 +1,53 @@
-//Write a program to remove duplicate values from an array and returns an array of unique values. int[] removeDuplicates(int[]values)
-//Ex:
-//values = [2, 4, 6, 2, 8, 10, 4, 12, 14, 6]
-//result = [2, 4, 6, 8, 10, 12, 14]
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import java.util.*;
 public class Main {
-    public static int[] removeDuplicates(int[] values) {
-        // Sort the array to bring duplicates together
-        Arrays.sort(values);
+    public static List<List<Integer>> threeSum(int[] nums, int targetSum) {
+        // Sort the array to easily find triplets
+        Arrays.sort(nums);
 
-        // Count the number of unique elements
-        int uniqueCount = 0;
-        for (int i = 0; i < values.length - 1; i++) {
-            if (values[i] != values[i + 1]) {
-                uniqueCount++;
+        List<List<Integer>> triplets = new ArrayList<>();
+        // Iterate through the array, considering each element as the potential first element of the triplet
+        for (int i = 0; i < nums.length - 2; i++) {
+            int left = i + 1; // Pointer for the second element of the triplet
+            int right = nums.length - 1; // Pointer for the third element of the triplet
+
+            while (left < right) {
+                int currentSum = nums[i] + nums[left] + nums[right];
+
+                if (currentSum == targetSum) {
+                    // Found a triplet that sums up to the target sum
+                    List<Integer> triplet = Arrays.asList(nums[i], nums[left], nums[right]);
+                    triplets.add(triplet);
+
+                    // Move the pointers to find other triplets
+                    left++;
+                    right--;
+                } else if (currentSum < targetSum) {
+                    // If the current sum is less than the target, move the left pointer to increase the sum
+                    left++;
+                } else {
+// If the current sum is greater than the target, move the right pointer to decrease the sum
+                    right--;
+                }
             }
         }
-        uniqueCount++; // count for the last element
 
-        // Create a new array to store the unique elements
-        int[] result = new int[uniqueCount];
-        int index = 0;
-        result[index++] = values[0];
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] != values[i - 1]) {
-                result[index++] = values[i];
-            }
-        }
-
-        return result;
+        return triplets;
     }
 
     public static void main(String[] args) {
-        int[] values = {2, 4, 6, 2, 8, 10, 4, 12, 14, 6};
-        int[] result = removeDuplicates(values);
-        System.out.println(Arrays.toString(result));
-    }
+        int targetSum = 6;
+        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
+        List<List<Integer>> result = threeSum(nums, targetSum);
+
+        // Print the result
+        System.out.println(result);
+    }
 }
 
-
-//time complexity:O(logn)
+//time complexity:O(n^2)
 //space complexity:O(n)
+
 
